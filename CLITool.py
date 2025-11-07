@@ -20,7 +20,7 @@ if __name__ == "__main__":
     while guess_number < 6 and result != 'vvvvv':
         inh = 1
         while len(guess) != 5 or inh:
-            guess = input(f'\nWhat is your {"next"*bool(guess_number)} guess?  ')
+            guess = input(f'\nWhat is your {"next "*bool(guess_number)}guess?  ')
             inh=0
 
         inh = 1
@@ -43,6 +43,4 @@ if __name__ == "__main__":
                        wrong=wrong)
 
         process_for_all_words(func)
-
-
-
+        guess_number += 1
