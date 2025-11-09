@@ -42,14 +42,18 @@ def criteria_function(word: str,
     return word
 
 
-def process_for_all_words(func: Callable[[str], Optional[str]]) -> None:
+def process_for_all_words(func: Callable[[str], Optional[str]], disp: bool = True) -> list[str]:
     ow = '.....'
+    rt = []
     for w in next_word():
         if func(w) is not None:
-            if w[0] != ow[0]:
-                print('\n' + w[0], end='\t')
-            print(w, end="\t")
-            ow = w
+            rt.append(w)
+            if disp:
+                if w[0] != ow[0]:
+                    print('\n' + w[0], end='\t')
+                print(w, end="\t")
+                ow = w
+    return rt
 
 
 if __name__ == '__main__':
