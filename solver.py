@@ -1,4 +1,5 @@
 from collections.abc import Generator, Callable
+from copy import deepcopy
 from typing import Optional
 
 def next_word() -> Generator[str]:
@@ -11,7 +12,7 @@ def next_word() -> Generator[str]:
 
 def criteria_function(word: str,
                       required: str,
-                      absent: str,
+                      l_to_max_count: dict[str, int],
                       wrong: list[tuple[str, int]]) -> Optional[str]:
     for i, l in enumerate(required):
         if l == '.':
@@ -20,9 +21,14 @@ def criteria_function(word: str,
             return None
 
     wc = wrong.copy()
+    lmc_calc = deepcopy(l_to_max_count)
     for i, l in enumerate(word):
-        if l in absent:
-            return None
+        if l in lmc_calc.keys():
+            if lmc_calc[l] == 0:
+                return None
+            if lmc_calc[l] > 0:
+                lmc_calc[l] -= 1
+
         if (l, i) in wrong:
             return None
         j = len(wc) - 1

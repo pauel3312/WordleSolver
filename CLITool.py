@@ -15,7 +15,7 @@ if __name__ == "__main__":
     guess = '.....'
     result = '.....'
     required = '.....'
-    absent = ''
+    l_to_max_count: dict[str, int] = {}
     wrong: list[tuple[str, int]] = []
     while guess_number < 6 and result != 'vvvvv':
         inh = 1
@@ -35,12 +35,18 @@ if __name__ == "__main__":
                 case 'w':
                     wrong.append((guess[i], i))
                 case 'a':
-                    absent += guess[i]
+                    l_to_max_count[guess[i]] = guess.count(guess[i])
+                    for k in range(len(guess)):
+                        if result[k] == 'a' and guess[k] == guess[i]:
+                            l_to_max_count[guess[i]] -= 1
+
 
         func = partial(criteria_function,
                        required=required,
-                       absent=absent,
+                       l_to_max_count=l_to_max_count,
                        wrong=wrong)
+
+#        print(required, l_to_max_count, wrong, sep='\n')
 
         process_for_all_words(func)
         guess_number += 1
