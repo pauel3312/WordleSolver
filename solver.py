@@ -1,6 +1,7 @@
 from collections.abc import Generator, Callable
 from copy import deepcopy
 from typing import Optional
+from functools import partial
 
 def next_word() -> Generator[str]:
     f = open('wordle_word_list.txt', 'r')
@@ -55,6 +56,24 @@ def process_for_all_words(func: Callable[[str], Optional[str]], disp: bool = Tru
                 ow = w
     return rt
 
+def word_to_score(word: str, letters_scores: dict[str, int]) -> int:
+    s = 0
+    for i, l in enumerate(word):
+        if l not in word[:i]:
+            s += letters_scores[l]
+    return s
+
+def sort_relevance(words: list[str]) -> list[str]:
+    char_to_n_map: dict[str, int] = {}
+    for i in range(26):
+        char_to_n_map[chr(i+97)] = 0
+    for w in words:
+        for c in w:
+            char_to_n_map[c] += 1
+    key = partial(word_to_score, letters_scores = char_to_n_map)
+
+    return sorted(words, key = key, reverse = True)
 
 if __name__ == '__main__':
-    process_for_all_words(lambda w: w)
+    print(sort_relevance(process_for_all_words(lambda w: w, False)))
+
