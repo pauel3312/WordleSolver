@@ -1,4 +1,4 @@
-from solver import criteria_function, process_for_all_words
+from solver import criteria_function, process_for_all_words, sort_relevance
 from functools import partial
 
 valid_results = 'vwa'
@@ -46,7 +46,11 @@ if __name__ == "__main__":
                        l_to_max_count=l_to_max_count,
                        wrong=wrong)
 
-#        print(required, l_to_max_count, wrong, sep='\n')
+        print("List of possible words:")
+        words = sort_relevance(process_for_all_words(func))
+        str_nxt = "\n\nBest words for next guess:"
+        for w in words[:10]:
+            str_nxt += f'\t{w}'
+        print(str_nxt)
 
-        process_for_all_words(func)
         guess_number += 1
