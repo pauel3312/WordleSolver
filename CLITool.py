@@ -46,9 +46,20 @@ if __name__ == "__main__":
                        l_to_max_count=l_to_max_count,
                        wrong=wrong)
 
+        only_max_count_func = partial(criteria_function,
+                                      required='.....',
+                                      l_to_max_count=l_to_max_count,
+                                      wrong=[])
+
         print("List of possible words:")
         words = sort_relevance(process_for_all_words(func))
         str_nxt = "\n\nBest words for next guess:"
+        for w in words[:10]:
+            str_nxt += f'\t{w}'
+        print(str_nxt)
+
+        words = sort_relevance(process_for_all_words(only_max_count_func, False))
+        str_nxt = "\nBest excluded-letters only words for next guess:"
         for w in words[:10]:
             str_nxt += f'\t{w}'
         print(str_nxt)
